@@ -14,7 +14,7 @@ type Media = {
 
 type Post = {
   category?: string;
-  coverImage?: Media | number | null;
+  coverImageUrl?: string | null;
   createdAt?: string;
   publishedAt?: string;
   slug: string;
@@ -37,7 +37,10 @@ function formatDate(date?: string) {
 }
 
 function getImage(image?: Media | number | null) {
-  if (image && typeof image === 'object' && image.url) {
+  if (image && typeof image === 'object' && 'url' in image && image.url) {
+    return image.url;
+  }
+  if (typeof image === 'string') {
     return image;
   }
 
@@ -64,17 +67,16 @@ export default async function BlogPage() {
 
       <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
         {(posts.docs as unknown as Post[]).map((post) => {
-          const image = getImage(post.coverImage);
           const date = formatDate(post.publishedAt ?? post.createdAt);
 
           return (
             <StaggerItem key={post.slug}>
               <Link href={`/blog/${post.slug}`}>
                 <Card className="h-full flex flex-col cursor-pointer group overflow-hidden p-0">
-                  {image ? (
+                  {post.coverImageUrl ? (
                     <img
-                      src={image.url}
-                      alt={image.alt ?? post.title}
+                      src={post.coverImageUrl}
+                      alt={post.title}
                       className="h-48 w-full object-cover"
                     />
                   ) : null}

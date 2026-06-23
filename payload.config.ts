@@ -30,20 +30,6 @@ export default buildConfig({
       fields: [],
     },
     {
-      slug: 'media',
-      upload: true,
-      admin: {
-        useAsTitle: 'alt',
-      },
-      fields: [
-        {
-          name: 'alt',
-          type: 'text',
-          required: true,
-        },
-      ],
-    },
-    {
       slug: 'pages',
       admin: {
         useAsTitle: 'title',
@@ -108,9 +94,9 @@ export default buildConfig({
           type: 'textarea',
         },
         {
-          name: 'coverImage',
-          type: 'upload',
-          relationTo: 'media',
+          name: 'coverImageUrl',
+          label: 'URL da Imagem de Capa',
+          type: 'text',
         },
         {
           name: 'publishedAt',
