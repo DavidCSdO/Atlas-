@@ -15,7 +15,7 @@ type Media = {
 type Post = {
   category?: string;
   content?: Parameters<typeof RichText>[0]['content'];
-  coverImageUrl?: string | null;
+  coverImage?: Media | number | null;
   createdAt?: string;
   publishedAt?: string;
   summary?: string;
@@ -69,6 +69,7 @@ export default async function BlogPostPage({ params }: Props) {
     notFound();
   }
 
+  const image = getImage(post.coverImage);
   const date = formatDate(post.publishedAt ?? post.createdAt);
 
   return (
@@ -96,10 +97,10 @@ export default async function BlogPostPage({ params }: Props) {
         ) : null}
       </div>
 
-      {post.coverImageUrl ? (
+      {image ? (
         <img
-          src={post.coverImageUrl}
-          alt={post.title}
+          src={image.url}
+          alt={image.alt ?? post.title}
           className="mb-12 h-auto max-h-[520px] w-full max-w-5xl rounded-sm object-cover"
         />
       ) : null}
