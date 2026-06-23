@@ -4,7 +4,15 @@ import React, { useRef, useState, MouseEvent } from 'react';
 import Link from 'next/link';
 import { Hexagon } from 'lucide-react';
 
-export function Footer() {
+export type FooterSettings = {
+  email?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  instagram?: string | null;
+  linkedin?: string | null;
+};
+
+export function Footer({ settings }: { settings?: FooterSettings }) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -43,9 +51,9 @@ export function Footer() {
           <div>
             <h3 className="font-semibold text-text mb-6">Contato</h3>
             <ul className="space-y-4 text-muted">
-              <li>contato@atlascapital.com.br</li>
-              <li>(11) 99999-9999</li>
-              <li>Av. Faria Lima, 3477 - São Paulo, SP</li>
+              <li>{settings?.email || 'contato@atlascapital.com.br'}</li>
+              <li>{settings?.phone || '(11) 99999-9999'}</li>
+              <li>{settings?.address || 'Av. Faria Lima, 3477 - São Paulo, SP'}</li>
             </ul>
           </div>
         </div>
@@ -55,8 +63,12 @@ export function Footer() {
           </p>
           <div className="flex gap-4">
             {/* Social icons could go here */}
-            <a href="#" className="text-muted hover:text-primary">LinkedIn</a>
-            <a href="#" className="text-muted hover:text-primary">Instagram</a>
+            {settings?.linkedin && (
+              <a href={settings.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-primary">LinkedIn</a>
+            )}
+            {settings?.instagram && (
+              <a href={settings.instagram} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-primary">Instagram</a>
+            )}
           </div>
         </div>
       </div>

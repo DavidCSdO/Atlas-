@@ -21,6 +21,22 @@ export default buildConfig({
       fields: [],
     },
     {
+      slug: 'media',
+      upload: {
+        staticDir: path.resolve(dirname, 'public/media'),
+      },
+      admin: {
+        useAsTitle: 'alt',
+      },
+      fields: [
+        {
+          name: 'alt',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
+    {
       slug: 'pages',
       admin: {
         useAsTitle: 'title',
@@ -85,6 +101,20 @@ export default buildConfig({
           type: 'textarea',
         },
         {
+          name: 'coverImage',
+          type: 'upload',
+          relationTo: 'media',
+        },
+        {
+          name: 'publishedAt',
+          type: 'date',
+          admin: {
+            date: {
+              pickerAppearance: 'dayAndTime',
+            },
+          },
+        },
+        {
           name: 'content',
           type: 'richText',
         },
@@ -127,6 +157,7 @@ export default buildConfig({
         { name: 'address', type: 'text' },
         { name: 'instagram', type: 'text' },
         { name: 'linkedin', type: 'text' },
+        { name: 'aboutImage', type: 'upload', relationTo: 'media' },
       ],
     },
   ],

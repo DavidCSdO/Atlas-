@@ -6,8 +6,26 @@ import { FadeIn } from "@/components/animations/FadeIn";
 import { StaggerContainer, StaggerItem } from "@/components/animations/Stagger";
 import { LiquidChrome } from "@/components/animations/LiquidChrome";
 import { ArrowRight, ShieldCheck, TrendingUp, Users, Hexagon } from "lucide-react";
+import configPromise from "@payload-config";
+import { getPayload } from "payload";
 
-export default function Home() {
+export const dynamic = 'force-dynamic';
+
+function formatDate(date?: string) {
+  if (!date) return null;
+  return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(date));
+}
+
+export default async function Home() {
+  const payload = await getPayload({ config: configPromise });
+  
+  // Buscar Serviços
+  const servicesRes = await payload.find({ collection: 'services', limit: 4 });
+  const services = servicesRes.docs as any[];
+
+  // Buscar Posts
+  const postsRes = await payload.find({ collection: 'posts', limit: 3, sort: '-publishedAt' });
+  const posts = postsRes.docs as any[];
   return (
     <div className="flex flex-col items-center justify-items-center min-h-screen">
       {/* Global Fixed Background for Hero */}
@@ -78,30 +96,43 @@ export default function Home() {
           </FadeIn>
 
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <StaggerItem>
-              <Card className="h-full">
-                <h3 className="text-lg font-semibold mb-2">Planejamento Financeiro</h3>
-                <p className="text-muted text-sm leading-relaxed">Organização patrimonial completa para o seu dia a dia.</p>
-              </Card>
-            </StaggerItem>
-            <StaggerItem>
-              <Card className="h-full">
-                <h3 className="text-lg font-semibold mb-2">Investimentos</h3>
-                <p className="text-muted text-sm leading-relaxed">Carteiras exclusivas e resilientes, focadas no seu perfil de risco.</p>
-              </Card>
-            </StaggerItem>
-            <StaggerItem>
-              <Card className="h-full">
-                <h3 className="text-lg font-semibold mb-2">Previdência</h3>
-                <p className="text-muted text-sm leading-relaxed">Estratégias inteligentes com foco no longo prazo.</p>
-              </Card>
-            </StaggerItem>
-            <StaggerItem>
-              <Card className="h-full">
-                <h3 className="text-lg font-semibold mb-2">Proteção Patrimonial</h3>
-                <p className="text-muted text-sm leading-relaxed">Planejamento sucessório e blindagem de legado.</p>
-              </Card>
-            </StaggerItem>
+            {services.length > 0 ? (
+              services.map((service) => (
+                <StaggerItem key={service.id}>
+                  <Card className="h-full">
+                    <h3 className="text-lg font-semibold mb-2">{service.name}</h3>
+                    <p className="text-muted text-sm leading-relaxed">{service.description}</p>
+                  </Card>
+                </StaggerItem>
+              ))
+            ) : (
+              <>
+                <StaggerItem>
+                  <Card className="h-full">
+                    <h3 className="text-lg font-semibold mb-2">Planejamento Financeiro</h3>
+                    <p className="text-muted text-sm leading-relaxed">Organização patrimonial completa para o seu dia a dia.</p>
+                  </Card>
+                </StaggerItem>
+                <StaggerItem>
+                  <Card className="h-full">
+                    <h3 className="text-lg font-semibold mb-2">Investimentos</h3>
+                    <p className="text-muted text-sm leading-relaxed">Carteiras exclusivas e resilientes, focadas no seu perfil de risco.</p>
+                  </Card>
+                </StaggerItem>
+                <StaggerItem>
+                  <Card className="h-full">
+                    <h3 className="text-lg font-semibold mb-2">Previdência</h3>
+                    <p className="text-muted text-sm leading-relaxed">Estratégias inteligentes com foco no longo prazo.</p>
+                  </Card>
+                </StaggerItem>
+                <StaggerItem>
+                  <Card className="h-full">
+                    <h3 className="text-lg font-semibold mb-2">Proteção Patrimonial</h3>
+                    <p className="text-muted text-sm leading-relaxed">Planejamento sucessório e blindagem de legado.</p>
+                  </Card>
+                </StaggerItem>
+              </>
+            )}
           </StaggerContainer>
         </section>
 
@@ -159,33 +190,49 @@ export default function Home() {
           </FadeIn>
 
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <StaggerItem>
-              <Link href="/blog" className="group block h-full">
-                <Card className="h-full bg-transparent hover:bg-white/[0.02] transition-colors border-white/5 group-hover:border-white/10">
-                  <div className="text-sm text-muted mb-4 font-mono">22 JUN 2026</div>
-                  <h3 className="text-xl font-bold text-text mb-3 group-hover:text-primary transition-colors">O impacto da política monetária global nos portfólios locais</h3>
-                  <p className="text-muted text-sm leading-relaxed">Entenda como as recentes decisões dos bancos centrais afetam as perspectivas de alocação estrutural.</p>
-                </Card>
-              </Link>
-            </StaggerItem>
-            <StaggerItem>
-              <Link href="/blog" className="group block h-full">
-                <Card className="h-full bg-transparent hover:bg-white/[0.02] transition-colors border-white/5 group-hover:border-white/10">
-                  <div className="text-sm text-muted mb-4 font-mono">18 JUN 2026</div>
-                  <h3 className="text-xl font-bold text-text mb-3 group-hover:text-primary transition-colors">Estratégias de sucessão patrimonial: por onde começar?</h3>
-                  <p className="text-muted text-sm leading-relaxed">Garantir a preservação do legado exige planejamento jurídico e financeiro muito além do testamento comum.</p>
-                </Card>
-              </Link>
-            </StaggerItem>
-            <StaggerItem>
-              <Link href="/blog" className="group block h-full">
-                <Card className="h-full bg-transparent hover:bg-white/[0.02] transition-colors border-white/5 group-hover:border-white/10">
-                  <div className="text-sm text-muted mb-4 font-mono">10 JUN 2026</div>
-                  <h3 className="text-xl font-bold text-text mb-3 group-hover:text-primary transition-colors">Ativos alternativos: mitigando riscos em cenários de incerteza</h3>
-                  <p className="text-muted text-sm leading-relaxed">Como fundos de Private Equity e Infraestrutura podem trazer resiliência para portfólios de alta renda.</p>
-                </Card>
-              </Link>
-            </StaggerItem>
+            {posts.length > 0 ? (
+              posts.map((post) => (
+                <StaggerItem key={post.id}>
+                  <Link href={`/blog/${post.slug}`} className="group block h-full">
+                    <Card className="h-full bg-transparent hover:bg-white/[0.02] transition-colors border-white/5 group-hover:border-white/10">
+                      <div className="text-sm text-muted mb-4 font-mono uppercase">{formatDate(post.publishedAt || post.createdAt)}</div>
+                      <h3 className="text-xl font-bold text-text mb-3 group-hover:text-primary transition-colors line-clamp-2">{post.title}</h3>
+                      <p className="text-muted text-sm leading-relaxed line-clamp-3">{post.summary}</p>
+                    </Card>
+                  </Link>
+                </StaggerItem>
+              ))
+            ) : (
+              <>
+                <StaggerItem>
+                  <Link href="/blog" className="group block h-full">
+                    <Card className="h-full bg-transparent hover:bg-white/[0.02] transition-colors border-white/5 group-hover:border-white/10">
+                      <div className="text-sm text-muted mb-4 font-mono">22 JUN 2026</div>
+                      <h3 className="text-xl font-bold text-text mb-3 group-hover:text-primary transition-colors">O impacto da política monetária global nos portfólios locais</h3>
+                      <p className="text-muted text-sm leading-relaxed">Entenda como as recentes decisões dos bancos centrais afetam as perspectivas de alocação estrutural.</p>
+                    </Card>
+                  </Link>
+                </StaggerItem>
+                <StaggerItem>
+                  <Link href="/blog" className="group block h-full">
+                    <Card className="h-full bg-transparent hover:bg-white/[0.02] transition-colors border-white/5 group-hover:border-white/10">
+                      <div className="text-sm text-muted mb-4 font-mono">18 JUN 2026</div>
+                      <h3 className="text-xl font-bold text-text mb-3 group-hover:text-primary transition-colors">Estratégias de sucessão patrimonial: por onde começar?</h3>
+                      <p className="text-muted text-sm leading-relaxed">Garantir a preservação do legado exige planejamento jurídico e financeiro muito além do testamento comum.</p>
+                    </Card>
+                  </Link>
+                </StaggerItem>
+                <StaggerItem>
+                  <Link href="/blog" className="group block h-full">
+                    <Card className="h-full bg-transparent hover:bg-white/[0.02] transition-colors border-white/5 group-hover:border-white/10">
+                      <div className="text-sm text-muted mb-4 font-mono">10 JUN 2026</div>
+                      <h3 className="text-xl font-bold text-text mb-3 group-hover:text-primary transition-colors">Ativos alternativos: mitigando riscos em cenários de incerteza</h3>
+                      <p className="text-muted text-sm leading-relaxed">Como fundos de Private Equity e Infraestrutura podem trazer resiliência para portfólios de alta renda.</p>
+                    </Card>
+                  </Link>
+                </StaggerItem>
+              </>
+            )}
           </StaggerContainer>
         </section>
 

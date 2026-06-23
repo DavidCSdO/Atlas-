@@ -1,40 +1,36 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import configPromise from "@payload-config";
+import { getPayload } from "payload";
 
 export const metadata: Metadata = {
   title: "Atlas Capital | Planejamento Financeiro de Alta Qualidade",
   description: "Ajudamos pessoas a organizar seu patrimônio, investir com inteligência e construir independência financeira.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const payload = await getPayload({ config: configPromise });
+  const settings = await payload.findGlobal({
+    slug: 'settings',
+  });
+
   return (
     <html
       lang="pt-BR"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className="h-full antialiased"
     >
       <body className="min-h-full flex flex-col bg-background text-text">
         <Navbar />
         <main className="flex-grow pt-20">
           {children}
         </main>
-        <Footer />
+        <Footer settings={settings} />
       </body>
     </html>
   );
