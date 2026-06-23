@@ -2,12 +2,12 @@ import { createClient } from '@/app/lib/supabase/server';
 import { cookies } from 'next/headers';
 
 export default async function TestDbPage() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
 
   // Teste 1: Verificar status do serviço de Autenticação
   const { data: authData, error: authError } = await supabase.auth.getSession();
-  
+
   // Teste 2: Tentar fazer uma query no banco de dados
   // Se a conexão estiver funcionando, isso deve retornar os dados (ou um erro de "tabela não existe" se ainda não tivermos criado tabelas, o que já prova que conectou no banco!)
   const { data: dbData, error: dbError } = await supabase.from('users').select('*').limit(1);
@@ -18,9 +18,9 @@ export default async function TestDbPage() {
       <p className="text-muted mb-12 text-center max-w-xl">
         Esta página verifica a comunicação em tempo real entre o nosso servidor Next.js e a API do Supabase.
       </p>
-      
+
       <div className="bg-[#0a0f1c] border border-white/10 shadow-2xl p-8 rounded-3xl w-full max-w-3xl overflow-hidden">
-        
+
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <div className={`w-3 h-3 rounded-full ${!authError ? 'bg-green-500 shadow-[0_0_10px_#22c55e]' : 'bg-red-500 shadow-[0_0_10px_#ef4444]'}`}></div>
