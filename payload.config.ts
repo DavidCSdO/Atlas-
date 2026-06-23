@@ -17,14 +17,14 @@ export default buildConfig({
       collections: {
         media: true,
       },
-      bucket: process.env.S3_BUCKET || '',
+      bucket: process.env.S3_BUCKET || 'media',
       config: {
         credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
-          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+          accessKeyId: process.env.S3_ACCESS_KEY_ID || 'dummy',
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || 'dummy',
         },
         region: process.env.S3_REGION || 'sa-east-1',
-        endpoint: process.env.S3_ENDPOINT || '',
+        endpoint: process.env.S3_ENDPOINT || 'https://dummy.supabase.co/storage/v1/s3',
         forcePathStyle: true,
       },
     }),
@@ -40,9 +40,7 @@ export default buildConfig({
     },
     {
       slug: 'media',
-      upload: {
-        staticDir: path.resolve(dirname, 'public/media'),
-      },
+      upload: true,
       admin: {
         useAsTitle: 'alt',
       },
