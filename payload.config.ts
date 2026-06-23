@@ -1,6 +1,7 @@
 import { buildConfig } from 'payload';
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -11,6 +12,14 @@ export default buildConfig({
   admin: {
     user: 'users',
   },
+  plugins: [
+    vercelBlobStorage({
+      collections: {
+        media: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN || '',
+    }),
+  ],
   collections: [
     {
       slug: 'users',
@@ -22,9 +31,7 @@ export default buildConfig({
     },
     {
       slug: 'media',
-      upload: {
-        staticDir: path.resolve(dirname, 'public/media'),
-      },
+      upload: true,
       admin: {
         useAsTitle: 'alt',
       },
