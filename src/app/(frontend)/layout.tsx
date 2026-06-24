@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   description: "Ajudamos pessoas a organizar seu patrimônio, investir com inteligência e construir independência financeira.",
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function RootLayout({
   children,
 }: Readonly<{

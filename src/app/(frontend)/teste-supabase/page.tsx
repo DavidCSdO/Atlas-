@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 
+export const dynamic = 'force-dynamic';
+
 export default async function TesteSupabasePage() {
   // Inicializa o cliente do servidor (já com o "await" necessário para o Next 15)
   const supabase = await createClient();
