@@ -7,15 +7,10 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { RichText } from '@/components/RichText';
 
-type Media = {
-  alt?: string;
-  url?: string;
-};
-
 type Post = {
   category?: string;
   content?: Parameters<typeof RichText>[0]['content'];
-  coverImage?: Media | number | null;
+  coverImage?: string | null;
   createdAt?: string;
   publishedAt?: string;
   summary?: string;
@@ -42,13 +37,7 @@ function formatDate(date?: string) {
   }).format(new Date(date));
 }
 
-function getImage(image?: Media | number | null) {
-  if (image && typeof image === 'object' && image.url) {
-    return image;
-  }
 
-  return null;
-}
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
@@ -69,7 +58,7 @@ export default async function BlogPostPage({ params }: Props) {
     notFound();
   }
 
-  const image = getImage(post.coverImage);
+  const image = post.coverImage;
   const date = formatDate(post.publishedAt ?? post.createdAt);
 
   return (
@@ -99,8 +88,8 @@ export default async function BlogPostPage({ params }: Props) {
 
       {image ? (
         <img
-          src={image.url}
-          alt={image.alt ?? post.title}
+          src={image}
+          alt={post.title}
           className="mb-12 h-auto max-h-[520px] w-full max-w-5xl rounded-sm object-cover"
         />
       ) : null}

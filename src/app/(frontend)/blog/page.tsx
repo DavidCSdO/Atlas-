@@ -7,14 +7,9 @@ import { Card } from '@/components/ui/Card';
 import { FadeIn } from '@/components/animations/FadeIn';
 import { StaggerContainer, StaggerItem } from '@/components/animations/Stagger';
 
-type Media = {
-  alt?: string;
-  url?: string;
-};
-
 type Post = {
   category?: string;
-  coverImage?: Media | number | null;
+  coverImage?: string | null;
   createdAt?: string;
   publishedAt?: string;
   slug: string;
@@ -36,13 +31,7 @@ function formatDate(date?: string) {
   }).format(new Date(date));
 }
 
-function getImage(image?: Media | number | null) {
-  if (image && typeof image === 'object' && image.url) {
-    return image;
-  }
 
-  return null;
-}
 
 export default async function BlogPage() {
   const payload = await getPayload({ config: configPromise });
@@ -64,7 +53,7 @@ export default async function BlogPage() {
 
       <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
         {(posts.docs as unknown as Post[]).map((post) => {
-          const image = getImage(post.coverImage);
+          const image = post.coverImage;
           const date = formatDate(post.publishedAt ?? post.createdAt);
 
           return (
@@ -73,8 +62,8 @@ export default async function BlogPage() {
                 <Card className="h-full flex flex-col cursor-pointer group overflow-hidden p-0">
                   {image ? (
                     <img
-                      src={image.url}
-                      alt={image.alt ?? post.title}
+                      src={image}
+                      alt={post.title}
                       className="h-48 w-full object-cover"
                     />
                   ) : null}

@@ -20,22 +20,7 @@ export default buildConfig({
       },
       fields: [],
     },
-    {
-      slug: 'media',
-      upload: {
-        staticDir: path.resolve(dirname, 'public/media'),
-      },
-      admin: {
-        useAsTitle: 'alt',
-      },
-      fields: [
-        {
-          name: 'alt',
-          type: 'text',
-          required: true,
-        },
-      ],
-    },
+
     {
       slug: 'pages',
       admin: {
@@ -102,8 +87,10 @@ export default buildConfig({
         },
         {
           name: 'coverImage',
-          type: 'upload',
-          relationTo: 'media',
+          type: 'text',
+          admin: {
+            description: 'URL da imagem de capa (opcional)',
+          },
         },
         {
           name: 'publishedAt',
@@ -157,7 +144,7 @@ export default buildConfig({
         { name: 'address', type: 'text' },
         { name: 'instagram', type: 'text' },
         { name: 'linkedin', type: 'text' },
-        { name: 'aboutImage', type: 'upload', relationTo: 'media' },
+        { name: 'aboutImage', type: 'text', admin: { description: 'URL da imagem institucional (opcional)' } },
       ],
     },
   ],
