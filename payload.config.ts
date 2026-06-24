@@ -151,9 +151,18 @@ export default buildConfig({
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'fallback-secret-for-dev',
   db: postgresAdapter({
-    pool: {
-      connectionString: process.env.DATABASE_URI || 'postgres://postgres:postgres@127.0.0.1:5432/atlas_fin',
-    },
+    pool: process.env.DATABASE_URI
+      ? { connectionString: process.env.DATABASE_URI }
+      : process.env.PGHOST
+        ? {
+            host: process.env.PGHOST,
+            port: Number(process.env.PGPORT) || 6543,
+            user: process.env.PGUSER,
+            password: process.env.PGPASSWORD,
+            database: process.env.PGDATABASE || 'postgres',
+            ssl: { rejectUnauthorized: false },
+          }
+        : { connectionString: 'postgres://postgres:postgres@127.0.0.1:5432/atlas_fin' },
   }),
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
