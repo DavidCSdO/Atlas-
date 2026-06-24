@@ -9,7 +9,7 @@ import { StaggerContainer, StaggerItem } from '@/components/animations/Stagger';
 
 type Post = {
   category?: string;
-  coverImage?: string | null;
+  coverImageUrl?: string | null;
   createdAt?: string;
   publishedAt?: string;
   slug: string;
@@ -53,7 +53,7 @@ export default async function BlogPage() {
 
       <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
         {(posts.docs as unknown as Post[]).map((post) => {
-          const image = post.coverImage;
+          const image = post.coverImageUrl;
           const date = formatDate(post.publishedAt ?? post.createdAt);
 
           return (

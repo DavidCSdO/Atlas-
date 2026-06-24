@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
 export default async function SobrePage() {
   const payload = await getPayload({ config: configPromise });
   const settings = await payload.findGlobal({ slug: 'settings' }) as any;
-  const image = settings.aboutImage && typeof settings.aboutImage === 'string' ? settings.aboutImage : null;
+  const image = settings.aboutImageUrl && typeof settings.aboutImageUrl === 'string' ? settings.aboutImageUrl : null;
   return (
     <div className="flex flex-col items-center min-h-screen py-16 px-6 lg:px-8">
       {/* Hero Sobre */}

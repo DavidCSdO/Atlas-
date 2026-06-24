@@ -86,7 +86,7 @@ export default buildConfig({
           type: 'textarea',
         },
         {
-          name: 'coverImage',
+          name: 'coverImageUrl',
           type: 'text',
           admin: {
             description: 'URL da imagem de capa (opcional)',
@@ -144,7 +144,7 @@ export default buildConfig({
         { name: 'address', type: 'text' },
         { name: 'instagram', type: 'text' },
         { name: 'linkedin', type: 'text' },
-        { name: 'aboutImage', type: 'text', admin: { description: 'URL da imagem institucional (opcional)' } },
+        { name: 'aboutImageUrl', type: 'text', admin: { description: 'URL da imagem institucional (opcional)' } },
       ],
     },
   ],
