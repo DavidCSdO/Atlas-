@@ -10,7 +10,6 @@ export const dynamic = 'force-dynamic';
 export default async function SobrePage() {
   const payload = await getPayload({ config: configPromise });
   const settings = await payload.findGlobal({ slug: 'settings' }) as any;
-  const image = settings.aboutImageUrl && typeof settings.aboutImageUrl === 'string' ? settings.aboutImageUrl : null;
   return (
     <div className="flex flex-col items-center min-h-screen py-16 px-6 lg:px-8">
       {/* Hero Sobre */}
@@ -63,15 +62,11 @@ export default async function SobrePage() {
           </FadeIn>
           
           <FadeIn delay={0.2} className="order-1 md:order-2 h-full min-h-[400px] rounded-2xl border border-white/10 bg-surface/30 relative overflow-hidden flex items-center justify-center">
-            {image ? (
-              <img src={image} alt="Imagem Institucional" className="absolute inset-0 w-full h-full object-cover" />
-            ) : (
-              <>
-                {/* Placeholder for an Image */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10" />
-                <span className="text-muted/50 font-medium">Imagem Institucional</span>
-              </>
-            )}
+            <>
+              {/* Placeholder institucional */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10" />
+              <span className="text-muted/50 font-medium">Imagem Institucional</span>
+            </>
           </FadeIn>
         </div>
       </div>

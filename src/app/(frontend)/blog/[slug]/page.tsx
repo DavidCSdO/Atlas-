@@ -10,7 +10,6 @@ import { RichText } from '@/components/RichText';
 type Post = {
   category?: string;
   content?: Parameters<typeof RichText>[0]['content'];
-  coverImageUrl?: string | null;
   createdAt?: string;
   publishedAt?: string;
   summary?: string;
@@ -58,7 +57,6 @@ export default async function BlogPostPage({ params }: Props) {
     notFound();
   }
 
-  const image = post.coverImageUrl;
   const date = formatDate(post.publishedAt ?? post.createdAt);
 
   return (
@@ -85,14 +83,6 @@ export default async function BlogPostPage({ params }: Props) {
           </p>
         ) : null}
       </div>
-
-      {image ? (
-        <img
-          src={image}
-          alt={post.title}
-          className="mb-12 h-auto max-h-[520px] w-full max-w-5xl rounded-sm object-cover"
-        />
-      ) : null}
 
       <div className="w-full max-w-3xl">
         <RichText content={post.content} />

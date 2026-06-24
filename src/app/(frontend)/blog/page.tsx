@@ -9,7 +9,6 @@ import { StaggerContainer, StaggerItem } from '@/components/animations/Stagger';
 
 type Post = {
   category?: string;
-  coverImageUrl?: string | null;
   createdAt?: string;
   publishedAt?: string;
   slug: string;
@@ -53,20 +52,12 @@ export default async function BlogPage() {
 
       <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
         {(posts.docs as unknown as Post[]).map((post) => {
-          const image = post.coverImageUrl;
           const date = formatDate(post.publishedAt ?? post.createdAt);
 
           return (
             <StaggerItem key={post.slug}>
               <Link href={`/blog/${post.slug}`}>
                 <Card className="h-full flex flex-col cursor-pointer group overflow-hidden p-0">
-                  {image ? (
-                    <img
-                      src={image}
-                      alt={post.title}
-                      className="h-48 w-full object-cover"
-                    />
-                  ) : null}
                   <div className="flex flex-1 flex-col p-8">
                     <div className="flex items-center gap-4 mb-4 text-sm text-muted">
                       {post.category ? (
